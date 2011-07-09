@@ -7,16 +7,34 @@
 //
 
 #import "PlacesAppDelegate.h"
+#import "TopRatedTableViewController.h"
+#import "MostRecentTableViewController.h"
 
 @implementation PlacesAppDelegate
 
-
+@synthesize tb = tb_;
 @synthesize window=_window;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+- (void)dealloc
 {
-    // Override point for customization after application launch.
+    [tb_ release];
+    [_window release];
+    [super dealloc];
+}
+
+- (BOOL)              application:(UIApplication *)application
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.tb = [[UITabBarController alloc] init];
+    TopRatedTableViewController *tp = 
+        [[TopRatedTableViewController alloc] init];
+    MostRecentTableViewController *mr =
+        [[MostRecentTableViewController alloc] init];
+    self.tb.viewControllers = [NSArray arrayWithObjects: tp, mr, nil];
+    [self.window addSubview:self.tb.view];
     [self.window makeKeyAndVisible];
+    [tp release];
+    [mr release];
     return YES;
 }
 
@@ -57,12 +75,6 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
-}
-
-- (void)dealloc
-{
-    [_window release];
-    [super dealloc];
 }
 
 @end

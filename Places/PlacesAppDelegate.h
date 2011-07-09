@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PlacesAppDelegate : NSObject <UIApplicationDelegate> {
-
+@interface PlacesAppDelegate : NSObject <UIApplicationDelegate>
+{
+    UITabBarController *tb_;
 }
 
+@property (nonatomic, retain) IBOutlet UITabBarController *tb;
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
 @end
