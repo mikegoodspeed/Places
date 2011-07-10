@@ -10,7 +10,7 @@
 
 @interface TopRatedTableViewController : UITableViewController
 {
-    
+    NSArray *data_;
 }
 
 @end

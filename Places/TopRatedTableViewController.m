@@ -7,13 +7,17 @@
 //
 
 #import "TopRatedTableViewController.h"
+#import "FlickrFetcher.h"
 
 @interface TopRatedTableViewController()
 - (void)setup;
-- (void)loadData;
+- (NSArray *)retrieveData;
+@property (nonatomic, retain) NSArray *data;
 @end
 
 @implementation TopRatedTableViewController
+
+@synthesize data = data_;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -21,7 +25,7 @@
     if (self)
     {
         [self setup];
-        [self loadData];
+        self.data = [self retrieveData];
     }
     return self;
 }
@@ -40,9 +44,40 @@
     [item release];
 }
 
-- (void)loadData
+- (NSArray *)retrieveData
 {
-    
+    NSString *docsDirectory = 
+        [NSSearchPathForDirectoriesInDomains(
+                                             NSDocumentDirectory,
+                                             NSUserDomainMask,
+                                             YES)
+                               objectAtIndex:0];
+    NSString *path = [docsDirectory 
+                      stringByAppendingPathComponent:@"topPlaces.xml"];
+    NSLog(@"%@", path);
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:path])
+    {
+        NSData *xmlData = [[NSData alloc] initWithContentsOfFile:path];
+        NSArray *places = [NSPropertyListSerialization
+                           propertyListWithData:xmlData
+                           options:NSPropertyListImmutable
+                           format:nil
+                           error:nil];
+        [xmlData release];
+        return places;
+    }
+    else
+    {
+        NSArray *places = [FlickrFetcher topPlaces];
+        NSData *xmlData = [NSPropertyListSerialization
+                              dataWithPropertyList:places
+                              format:NSPropertyListXMLFormat_v1_0
+                              options:0
+                              error:nil];
+        [xmlData writeToFile:path atomically:YES];
+        return places;
+    }
 }
 
 - (void)didReceiveMemoryWarning
