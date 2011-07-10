@@ -1,5 +1,5 @@
 //
-//  TopPlacesTableViewController.m
+//  TopRatedTableViewController.m
 //  Places
 //
 //  Created by Mike Goodspeed on 7/9/11.
@@ -10,6 +10,7 @@
 
 @interface TopRatedTableViewController()
 - (void)setup;
+- (void)loadData;
 @end
 
 @implementation TopRatedTableViewController
@@ -20,6 +21,7 @@
     if (self)
     {
         [self setup];
+        [self loadData];
     }
     return self;
 }
@@ -34,9 +36,13 @@
     UITabBarItem *item = [[UITabBarItem alloc] 
                           initWithTabBarSystemItem:UITabBarSystemItemTopRated
                           tag:0];
-    item.title = @"Top Places";
     self.tabBarItem = item;
     [item release];
+}
+
+- (void)loadData
+{
+    
 }
 
 - (void)didReceiveMemoryWarning

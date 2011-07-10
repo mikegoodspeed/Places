@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface MostRecentTableViewController : UITableViewController {
+@interface MostRecentTableViewController : UITableViewController
+{
     
 }
 

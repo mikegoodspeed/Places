@@ -7,7 +7,8 @@
 
 #import "FlickrFetcher.h"
 // You need to add a FlickrAPIKey.h file and then
-// #define FlickrAPIKey @"<your key here>" to get it to work
+// #define FlickrAPIKey @"<your key here>"
+// to get it to work
 #import "FlickrAPIKey.h"
 #import "JSON.h"
 

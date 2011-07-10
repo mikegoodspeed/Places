@@ -34,7 +34,6 @@
     UITabBarItem *item = [[UITabBarItem alloc] 
                           initWithTabBarSystemItem:UITabBarSystemItemMostRecent
                           tag:0];
-    item.title = @"Top Places";
     self.tabBarItem = item;
     [item release];
 }

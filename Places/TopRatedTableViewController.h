@@ -1,5 +1,5 @@
 //
-//  TopPlacesTableViewController.h
+//  TopRatedTableViewController.h
 //  Places
 //
 //  Created by Mike Goodspeed on 7/9/11.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-
-@interface TopRatedTableViewController : UITableViewController {
+@interface TopRatedTableViewController : UITableViewController
+{
     
 }
 
