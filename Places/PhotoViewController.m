@@ -8,22 +8,43 @@
 
 #import "PhotoViewController.h"
 
+@interface PhotoViewController()
+@property (nonatomic, copy) NSString *photoId;
+@property (nonatomic, copy) NSString *secret;
+@property (nonatomic, copy) NSString *farm;
+@property (nonatomic, copy) NSString *server;
+@end
+
 
 @implementation PhotoViewController
 
-- (id)init
+@synthesize photoId = photoId_;
+@synthesize secret = secret_;
+@synthesize farm = farm_;
+@synthesize server = server_;
+
+- (id)initWithPhotoId:(NSString *)photoId
+               Secret:(NSString *)secret
+                 Farm:(NSString *)farm
+               Server:(NSString *)server
 {
     self = [super init];
     if (self)
     {
-        // Custom initialization
-        // NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:@"", @"id", @"", @"server", @"", @"farm", @"", @"secret", nil];
+        self.photoId = photoId;
+        self.secret = secret;
+        self.farm = farm;
+        self.server = server;
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [photoId_ release];
+    [secret_ release];
+    [farm_ release];
+    [server_ release];
     [super dealloc];
 }
 

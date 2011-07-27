@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 
 
-@interface PhotoViewController : UIViewController {
-    
+@interface PhotoViewController : UIViewController
+{
+    NSString *photoId_;
+    NSString *secret_;
+    NSString *farm_;
+    NSString *server_;
 }
 
 @end
