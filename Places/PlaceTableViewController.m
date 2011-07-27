@@ -1,98 +1,52 @@
 //
-//  TopRatedTableViewController.m
+//  PlaceTableViewController.m
 //  Places
 //
-//  Created by Mike Goodspeed on 7/9/11.
+//  Created by Mike Goodspeed on 7/27/11.
 //  Copyright 2011 Mike Goodspeed. All rights reserved.
 //
 
-#import "TopRatedTableViewController.h"
-#import "FlickrFetcher.h"
 #import "PlaceTableViewController.h"
+#import "FlickrFetcher.h"
+#import "PhotoViewController.h"
 
-@interface TopRatedTableViewController()
-- (void)setup;
-//- (NSArray *)retrieveData;
+@interface PlaceTableViewController()
+@property (nonatomic, copy) NSString *placeId;
 @property (nonatomic, retain) NSArray *data;
 @end
 
-@implementation TopRatedTableViewController
+@implementation PlaceTableViewController
 
+@synthesize placeId = placeId_;
 @synthesize data = data_;
 
 - (NSArray *)data
 {
     if (!data_)
     {
-        data_ = [[FlickrFetcher topPlaces] retain];
+        data_ = [[FlickrFetcher photosAtPlace:self.placeId] retain];
+        NSLog(@"%@", data_);
     }
     return data_;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)initWithPlaceId:(NSString *)placeId andTitle:(NSString *)title
 {
-    self = [super initWithStyle:style];
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self)
     {
-        [self setup];
+        self.title = title;
+        self.placeId = placeId;
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [placeId_ release];
     [data_ release];
     [super dealloc];
 }
-
-- (void)setup
-{
-    self.title = @"Places";
-    UITabBarItem *item = [[UITabBarItem alloc] 
-                          initWithTabBarSystemItem:UITabBarSystemItemTopRated
-                          tag:0];
-    self.tabBarItem = item;
-    [item release];
-}
-
-//- (NSArray *)retrieveData
-//{
-//    BOOL useCache = YES;
-//    NSString *docsDirectory = 
-//        [NSSearchPathForDirectoriesInDomains(
-//                                             NSDocumentDirectory,
-//                                             NSUserDomainMask,
-//                                             YES)
-//                               objectAtIndex:0];
-//    NSString *path = [docsDirectory 
-//                      stringByAppendingPathComponent:@"topPlaces.xml"];
-//    NSFileManager *fileManager = [NSFileManager defaultManager];
-//    if (useCache && [fileManager fileExistsAtPath:path])
-//    {
-//        NSData *xmlData = [[NSData alloc] initWithContentsOfFile:path];
-//        NSArray *places = [NSPropertyListSerialization
-//                           propertyListWithData:xmlData
-//                           options:NSPropertyListImmutable
-//                           format:nil
-//                           error:nil];
-//        [xmlData release];
-//        NSLog(@"%@", places);
-//        return places;
-//    }
-//    else
-//    {
-//        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//        NSArray *places = [FlickrFetcher topPlaces];
-//        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//        NSData *xmlData = [NSPropertyListSerialization
-//                              dataWithPropertyList:places
-//                              format:NSPropertyListXMLFormat_v1_0
-//                              options:0
-//                              error:nil];
-//        [xmlData writeToFile:path atomically:YES];
-//        return places;
-//    }
-//}
 
 - (void)didReceiveMemoryWarning
 {
@@ -167,23 +121,33 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView 
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"TopRatedTableViewController";
+    static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView 
                              dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] 
+    if (cell == nil)
+    {
+        cell = [[[UITableViewCell alloc]
                  initWithStyle:UITableViewCellStyleSubtitle
                  reuseIdentifier:CellIdentifier] autorelease];
     }
     
     NSDictionary *item = [self.data objectAtIndex:indexPath.row];
-    NSString *content = [item objectForKey:@"_content"];
-    NSArray *components = [content componentsSeparatedByString:@","];
-    cell.textLabel.text = [components objectAtIndex:0];
-    NSRange range = NSMakeRange(1, components.count - 1);
-    cell.detailTextLabel.text = [[components subarrayWithRange:range]
-                                 componentsJoinedByString:@","];
+    NSString *title = [item objectForKey:@"title"];
+    NSString *description = [[item objectForKey:@"description"]
+                             objectForKey:@"_content"];
+    if ([title isEqualToString:@""])
+    {
+        title = description;
+        description = @"";
+        if ([title isEqualToString:@""])
+        {
+            title = @"Unknown";
+        }
+    }
+    cell.textLabel.text = title;
+    cell.detailTextLabel.text = description;
+    
     return cell;
 }
 
@@ -230,15 +194,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *item = [self.data objectAtIndex:indexPath.row];
-    NSString *content = [item objectForKey:@"_content"];
-    NSArray *components = [content componentsSeparatedByString:@","];
-    NSString *title = [components objectAtIndex:0];
-    NSString *placeId = [item objectForKey:@"place_id"];
-    PlaceTableViewController *ptvc = [[PlaceTableViewController alloc]
-                                      initWithPlaceId:placeId andTitle:title];
-    [self.navigationController pushViewController:ptvc animated:YES];
-    [ptvc release];
+    // Navigation logic may go here. Create and push another view controller.
+    /*
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+     [detailViewController release];
+     */
+//    NSDictionary *item = [self.data objectAtIndex:indexPath.row];
+    PhotoViewController *pvc = [[PhotoViewController alloc] init];
+    [self.navigationController pushViewController:pvc animated:YES];
+    [pvc release];
 }
 
 @end

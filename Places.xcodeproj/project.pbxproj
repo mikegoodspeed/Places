@@ -23,6 +23,8 @@
 		275C359613C90C9C00B8EE12 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C358F13C90C9C00B8EE12 /* SBJsonWriter.m */; };
 		275C35B613C9119F00B8EE12 /* TopRatedTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C35B513C9119F00B8EE12 /* TopRatedTableViewController.m */; };
 		275C35B913C912C300B8EE12 /* MostRecentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275C35B813C912C300B8EE12 /* MostRecentTableViewController.m */; };
+		27725C8713DFE20400288CE2 /* PlaceTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27725C8613DFE20400288CE2 /* PlaceTableViewController.m */; };
+		27725C9313DFF0B300288CE2 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27725C9213DFF0B300288CE2 /* PhotoViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,10 +55,14 @@
 		275C358D13C90C9C00B8EE12 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		275C358E13C90C9C00B8EE12 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		275C358F13C90C9C00B8EE12 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		275C35B413C9119F00B8EE12 /* TopRatedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = TopRatedTableViewController.h; sourceTree = "<group>"; };
+		275C35B413C9119F00B8EE12 /* TopRatedTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopRatedTableViewController.h; sourceTree = "<group>"; };
 		275C35B513C9119F00B8EE12 /* TopRatedTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopRatedTableViewController.m; sourceTree = "<group>"; };
 		275C35B713C912C300B8EE12 /* MostRecentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MostRecentTableViewController.h; sourceTree = "<group>"; };
 		275C35B813C912C300B8EE12 /* MostRecentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MostRecentTableViewController.m; sourceTree = "<group>"; };
+		27725C8513DFE20400288CE2 /* PlaceTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceTableViewController.h; sourceTree = "<group>"; };
+		27725C8613DFE20400288CE2 /* PlaceTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceTableViewController.m; sourceTree = "<group>"; };
+		27725C9113DFF0B300288CE2 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
+		27725C9213DFF0B300288CE2 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,10 +111,14 @@
 			children = (
 				275C35B713C912C300B8EE12 /* MostRecentTableViewController.h */,
 				275C35B813C912C300B8EE12 /* MostRecentTableViewController.m */,
-				275C35B413C9119F00B8EE12 /* TopRatedTableViewController.h */,
-				275C35B513C9119F00B8EE12 /* TopRatedTableViewController.m */,
+				27725C9113DFF0B300288CE2 /* PhotoViewController.h */,
+				27725C9213DFF0B300288CE2 /* PhotoViewController.m */,
+				27725C8513DFE20400288CE2 /* PlaceTableViewController.h */,
+				27725C8613DFE20400288CE2 /* PlaceTableViewController.m */,
 				275C356C13C9053E00B8EE12 /* PlacesAppDelegate.h */,
 				275C356D13C9053E00B8EE12 /* PlacesAppDelegate.m */,
+				275C35B413C9119F00B8EE12 /* TopRatedTableViewController.h */,
+				275C35B513C9119F00B8EE12 /* TopRatedTableViewController.m */,
 				275C356F13C9053E00B8EE12 /* MainWindow.xib */,
 				275C356413C9053E00B8EE12 /* Supporting Files */,
 			);
@@ -223,6 +233,8 @@
 				275C359613C90C9C00B8EE12 /* SBJsonWriter.m in Sources */,
 				275C35B613C9119F00B8EE12 /* TopRatedTableViewController.m in Sources */,
 				275C35B913C912C300B8EE12 /* MostRecentTableViewController.m in Sources */,
+				27725C8713DFE20400288CE2 /* PlaceTableViewController.m in Sources */,
+				27725C9313DFF0B300288CE2 /* PhotoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

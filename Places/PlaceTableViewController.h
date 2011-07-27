@@ -1,0 +1,20 @@
+//
+//  PlaceTableViewController.h
+//  Places
+//
+//  Created by Mike Goodspeed on 7/27/11.
+//  Copyright 2011 Mike Goodspeed. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+
+@interface PlaceTableViewController : UITableViewController
+{
+    NSString *placeId_;
+    NSArray *data_;
+}
+
+- (id)initWithPlaceId:(NSString *)placeId andTitle:(NSString *)title;
+
+@end

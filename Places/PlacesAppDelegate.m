@@ -26,15 +26,24 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.tb = [[UITabBarController alloc] init];
-    TopRatedTableViewController *tp = 
-        [[TopRatedTableViewController alloc] init];
-    MostRecentTableViewController *mr =
-        [[MostRecentTableViewController alloc] init];
-    self.tb.viewControllers = [NSArray arrayWithObjects: tp, mr, nil];
+    
+    TopRatedTableViewController *trtvc = [[TopRatedTableViewController alloc]
+                                          init];
+    UINavigationController *trnc = [[UINavigationController alloc] init];
+    [trnc pushViewController:trtvc animated:NO];
+    
+    MostRecentTableViewController *mrtvc = [[MostRecentTableViewController alloc]
+                                            init];
+    UINavigationController *mrnc = [[UINavigationController alloc] init];
+    [mrnc pushViewController:mrtvc animated:NO];
+    
+    self.tb.viewControllers = [NSArray arrayWithObjects: trnc, mrnc, nil];
     [self.window addSubview:self.tb.view];
     [self.window makeKeyAndVisible];
-    [tp release];
-    [mr release];
+    [trtvc release];
+    [trnc release];
+    [mrtvc release];
+    [mrnc release];
     return YES;
 }
 
