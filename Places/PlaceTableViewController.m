@@ -25,7 +25,6 @@
     if (!data_)
     {
         data_ = [[FlickrFetcher photosAtPlace:self.placeId] retain];
-        NSLog(@"%@", data_);
     }
     return data_;
 }
@@ -194,16 +193,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
-//    NSDictionary *item = [self.data objectAtIndex:indexPath.row];
-    PhotoViewController *pvc = [[PhotoViewController alloc] init];
+    NSDictionary *item = [self.data objectAtIndex:indexPath.row];
+    NSString *photoId = [item objectForKey:@"id"];
+    NSString *secret = [item objectForKey:@"secret"];
+    NSString *farm = [item objectForKey:@"farm"];
+    NSString *server = [item objectForKey:@"server"];
+    PhotoViewController *pvc = [[PhotoViewController alloc] 
+                                initWithPhotoId:photoId
+                                Secret:secret
+                                Farm:farm
+                                Server:server];
     [self.navigationController pushViewController:pvc animated:YES];
     [pvc release];
 }
