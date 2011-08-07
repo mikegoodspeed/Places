@@ -65,9 +65,9 @@
                           photoId, @"photoId", secret, @"secret", farm, @"farm",
                           server, @"server", title, @"title", 
                           description, @"description", nil];
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:
-//                              @"photoId != '%@'", photoId];
-//    [self.photoData filterUsingPredicate:predicate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:
+                              @"photoId != %@", photoId];
+    [self.photoData filterUsingPredicate:predicate];
     [self.photoData insertObject:item atIndex:0];
     [self.tableView reloadData];
 }
@@ -189,11 +189,13 @@
     NSString *secret = [item objectForKey:@"secret"];
     NSString *farm = [item objectForKey:@"farm"];
     NSString *server = [item objectForKey:@"server"];
+    NSString *title = [item objectForKey:@"title"];
     PhotoViewController *pvc = [[PhotoViewController alloc] 
                                 initWithPhotoId:photoId
                                 secret:secret
                                 farm:farm
-                                server:server];
+                                server:server
+                                title:title];
     [self.navigationController pushViewController:pvc animated:YES];
     [pvc release];
 }

@@ -20,5 +20,6 @@
 - (id)initWithPhotoId:(NSString *)photoId
                secret:(NSString *)secret
                  farm:(NSString *)farm
-               server:(NSString *)server;
+               server:(NSString *)server
+                title:(NSString *)title;
 @end

@@ -14,12 +14,19 @@
 @interface PlaceTableViewController()
 @property (nonatomic, copy) NSString *placeId;
 @property (nonatomic, retain) NSArray *places;
+@property (readonly) MostRecentTableViewController *recents;
 @end
 
 @implementation PlaceTableViewController
 
 @synthesize placeId = placeId_;
 @synthesize places = places_;
+
+- (MostRecentTableViewController *)recents
+{
+    return [[[self.tabBarController.viewControllers lastObject]
+      viewControllers] lastObject];
+}
 
 - (NSArray *)data
 {
@@ -169,26 +176,24 @@
     NSString *secret = [item objectForKey:@"secret"];
     NSString *farm = [item objectForKey:@"farm"];
     NSString *server = [item objectForKey:@"server"];
+    NSArray *info = [self cellInfoFromIndexPath:indexPath];
+    NSString *title = [info objectAtIndex:0];
+    NSString *description = [info objectAtIndex:1];
     PhotoViewController *pvc = [[PhotoViewController alloc] 
                                 initWithPhotoId:photoId
                                 secret:secret
                                 farm:farm
-                                server:server];
+                                server:server
+                                title:title];
     [self.navigationController pushViewController:pvc animated:YES];
     [pvc release];
-    
-    MostRecentTableViewController *mrtvc = 
-        [[[self.tabBarController.viewControllers lastObject] 
-          viewControllers] lastObject];
-    NSArray *info = [self cellInfoFromIndexPath:indexPath];
-    NSString *title = [info objectAtIndex:0];
-    NSString *description = [info objectAtIndex:1];
-    [mrtvc addPhotoWithPhotoId:photoId
-                        secret:secret
-                          farm:farm
-                        server:server
-                         title:title
-                   description:description];
+        
+    [self.recents addPhotoWithPhotoId:photoId
+                               secret:secret
+                                 farm:farm
+                               server:server
+                                title:title
+                          description:description];
 }
 
 @end

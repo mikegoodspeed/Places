@@ -45,6 +45,7 @@
                secret:(NSString *)secret
                  farm:(NSString *)farm
                server:(NSString *)server
+                title:(NSString *)title
 {
     self = [super init];
     if (self)
@@ -53,6 +54,7 @@
         self.secret = secret;
         self.farm = farm;
         self.server = server;
+        self.title = title;
     }
     return self;
 }

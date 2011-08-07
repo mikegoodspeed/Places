@@ -1,6 +1,5 @@
 * Pinch to zoom
-* Autosize photosi to show largest w/out unused space
-* Remove duplicates in Recents
+* Autosize photos to show largest w/out unused space
 * Cap recents at 25 (??)
 * Support landscape orientation
 * Serialize Recents to NSUserDefaults
