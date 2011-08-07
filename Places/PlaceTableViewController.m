@@ -9,24 +9,25 @@
 #import "PlaceTableViewController.h"
 #import "FlickrFetcher.h"
 #import "PhotoViewController.h"
+#import "MostRecentTableViewController.h"
 
 @interface PlaceTableViewController()
 @property (nonatomic, copy) NSString *placeId;
-@property (nonatomic, retain) NSArray *data;
+@property (nonatomic, retain) NSArray *places;
 @end
 
 @implementation PlaceTableViewController
 
 @synthesize placeId = placeId_;
-@synthesize data = data_;
+@synthesize places = places_;
 
 - (NSArray *)data
 {
-    if (!data_)
+    if (!places_)
     {
-        data_ = [[FlickrFetcher photosAtPlace:self.placeId] retain];
+        places_ = [[FlickrFetcher photosAtPlace:self.placeId] retain];
     }
-    return data_;
+    return places_;
 }
 
 - (id)initWithPlaceId:(NSString *)placeId andTitle:(NSString *)title
@@ -43,7 +44,7 @@
 - (void)dealloc
 {
     [placeId_ release];
-    [data_ release];
+    [places_ release];
     [super dealloc];
 }
 
@@ -117,6 +118,24 @@
     return self.data.count;
 }
 
+- (NSArray *)cellInfoFromIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *item = [self.places objectAtIndex:indexPath.row];
+    NSString *title = [item objectForKey:@"title"];
+    NSString *description = [[item objectForKey:@"description"]
+                             objectForKey:@"_content"];
+    if ([title isEqualToString:@""])
+    {
+        title = description;
+        description = @"";
+        if ([title isEqualToString:@""])
+        {
+            title = @"Unknown";
+        }
+    }
+    return [NSArray arrayWithObjects:title, description, nil];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView 
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -131,80 +150,45 @@
                  reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    NSDictionary *item = [self.data objectAtIndex:indexPath.row];
-    NSString *title = [item objectForKey:@"title"];
-    NSString *description = [[item objectForKey:@"description"]
-                             objectForKey:@"_content"];
-    if ([title isEqualToString:@""])
-    {
-        title = description;
-        description = @"";
-        if ([title isEqualToString:@""])
-        {
-            title = @"Unknown";
-        }
-    }
+    NSArray *info = [self cellInfoFromIndexPath:indexPath];
+    NSString *title = [info objectAtIndex:0];
+    NSString *description = [info objectAtIndex:1];
     cell.textLabel.text = title;
     cell.detailTextLabel.text = description;
     
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *item = [self.data objectAtIndex:indexPath.row];
+    NSDictionary *item = [self.places objectAtIndex:indexPath.row];
     NSString *photoId = [item objectForKey:@"id"];
     NSString *secret = [item objectForKey:@"secret"];
     NSString *farm = [item objectForKey:@"farm"];
     NSString *server = [item objectForKey:@"server"];
     PhotoViewController *pvc = [[PhotoViewController alloc] 
                                 initWithPhotoId:photoId
-                                Secret:secret
-                                Farm:farm
-                                Server:server];
+                                secret:secret
+                                farm:farm
+                                server:server];
     [self.navigationController pushViewController:pvc animated:YES];
     [pvc release];
+    
+    MostRecentTableViewController *mrtvc = 
+        [[[self.tabBarController.viewControllers lastObject] 
+          viewControllers] lastObject];
+    NSArray *info = [self cellInfoFromIndexPath:indexPath];
+    NSString *title = [info objectAtIndex:0];
+    NSString *description = [info objectAtIndex:1];
+    [mrtvc addPhotoWithPhotoId:photoId
+                        secret:secret
+                          farm:farm
+                        server:server
+                         title:title
+                   description:description];
 }
 
 @end

@@ -14,11 +14,11 @@
     NSString *secret_;
     NSString *farm_;
     NSString *server_;
-    NSData *data_;
+    NSData *imgData_;
 }
 
 - (id)initWithPhotoId:(NSString *)photoId
-               Secret:(NSString *)secret
-                 Farm:(NSString *)farm
-               Server:(NSString *)server;
+               secret:(NSString *)secret
+                 farm:(NSString *)farm
+               server:(NSString *)server;
 @end

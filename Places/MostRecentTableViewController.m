@@ -7,12 +7,25 @@
 //
 
 #import "MostRecentTableViewController.h"
+#import "PhotoViewController.h"
 
 @interface MostRecentTableViewController()
 - (void)setup;
+@property (nonatomic, retain) NSMutableArray *photoData;
 @end
 
 @implementation MostRecentTableViewController
+
+@synthesize photoData = photoData_;
+
+-(NSMutableArray *)photoData
+{
+    if (!photoData_)
+    {
+        photoData_ = [[NSMutableArray alloc] initWithCapacity:0];
+    }
+    return photoData_;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,16 +39,37 @@
 
 - (void)dealloc
 {
+    [photoData_ release];
     [super dealloc];
 }
 
 - (void)setup
 {
+    self.title = @"Recents";
     UITabBarItem *item = [[UITabBarItem alloc] 
                           initWithTabBarSystemItem:UITabBarSystemItemMostRecent
                           tag:0];
     self.tabBarItem = item;
     [item release];
+}
+
+
+- (void)addPhotoWithPhotoId:(NSString *)photoId
+                     secret:(NSString *)secret
+                       farm:(NSString *)farm
+                     server:(NSString *)server
+                      title:(NSString *)title
+                description:(NSString *)description
+{
+    NSDictionary *item = [NSDictionary dictionaryWithObjectsAndKeys:
+                          photoId, @"photoId", secret, @"secret", farm, @"farm",
+                          server, @"server", title, @"title", 
+                          description, @"description", nil];
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat:
+//                              @"photoId != '%@'", photoId];
+//    [self.photoData filterUsingPredicate:predicate];
+    [self.photoData insertObject:item atIndex:0];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,31 +93,12 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
+    NSLog(@"self.photoData.count = %d", self.photoData.count);
+    NSLog(@"photoData_.count = %d", photoData_.count);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -97,25 +112,33 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 0;
+    NSLog(@"self.photoData.count = %d", self.photoData.count);
+    return self.photoData.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"MostRecentTableViewController";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    if (cell == nil)
+    {
+        cell = [[[UITableViewCell alloc] 
+                 initWithStyle:UITableViewCellStyleDefault 
+                 reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    // Configure the cell...
+    NSDictionary *item = [self.photoData objectAtIndex:indexPath.row];
+    NSString *title = [item objectForKey:@"title"];
+    NSString *description = [item objectForKey:@"description"];
+    cell.textLabel.text = title;
+    cell.detailTextLabel.text = description;
     
     return cell;
 }
@@ -163,14 +186,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    NSDictionary *item = [self.photoData objectAtIndex:indexPath.row];
+    NSString *photoId = [item objectForKey:@"photoId"];
+    NSString *secret = [item objectForKey:@"secret"];
+    NSString *farm = [item objectForKey:@"farm"];
+    NSString *server = [item objectForKey:@"server"];
+    PhotoViewController *pvc = [[PhotoViewController alloc] 
+                                initWithPhotoId:photoId
+                                secret:secret
+                                farm:farm
+                                server:server];
+    [self.navigationController pushViewController:pvc animated:YES];
+    [pvc release];
 }
 
 @end

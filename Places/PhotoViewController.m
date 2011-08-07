@@ -14,7 +14,7 @@
 @property (nonatomic, copy) NSString *secret;
 @property (nonatomic, copy) NSString *farm;
 @property (nonatomic, copy) NSString *server;
-@property (nonatomic, retain) NSData *data;
+@property (nonatomic, retain) NSData *imgData;
 @end
 
 @implementation PhotoViewController
@@ -23,28 +23,28 @@
 @synthesize secret = secret_;
 @synthesize farm = farm_;
 @synthesize server = server_;
-@synthesize data = data_;
+@synthesize imgData = imgData_;
 
-- (NSData *)data
+- (NSData *)imgData
 {
-    if (!data_)
+    if (!imgData_)
     {
         NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:
                               self.photoId, @"id",
                               self.secret, @"secret",
                               self.farm, @"farm",
                               self.server, @"server", nil];
-        data_ = [FlickrFetcher
-                 imageDataForPhotoWithFlickrInfo:info
-                 format:FlickrFetcherPhotoFormatLarge];
+        imgData_ = [FlickrFetcher
+                    imageDataForPhotoWithFlickrInfo:info
+                    format:FlickrFetcherPhotoFormatLarge];
     }
-    return data_;
+    return imgData_;
 }
 
 - (id)initWithPhotoId:(NSString *)photoId
-               Secret:(NSString *)secret
-                 Farm:(NSString *)farm
-               Server:(NSString *)server
+               secret:(NSString *)secret
+                 farm:(NSString *)farm
+               server:(NSString *)server
 {
     self = [super init];
     if (self)
@@ -63,16 +63,8 @@
     [secret_ release];
     [farm_ release];
     [server_ release];
-    [data_ release];
+    [imgData_ release];
     [super dealloc];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
@@ -80,7 +72,7 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {    
-    UIImage *image = [UIImage imageWithData:self.data];
+    UIImage *image = [UIImage imageWithData:self.imgData];
     UIImageView *imgView = [[UIImageView alloc] initWithImage:image];
     CGRect frame = [[UIScreen mainScreen] applicationFrame];
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:frame];
@@ -98,20 +90,6 @@
 {
     // return the imgView inside the scrollView inside self.view
     return [[[[self.view subviews] lastObject] subviews] lastObject];
-}
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-*/
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    [[[self.view subviews] lastObject] removeFromSuperview];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

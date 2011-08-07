@@ -13,20 +13,22 @@
 @interface TopRatedTableViewController()
 - (void)setup;
 //- (NSArray *)retrieveData;
-@property (nonatomic, retain) NSArray *data;
+@property (nonatomic, retain) NSArray *places;
 @end
 
 @implementation TopRatedTableViewController
 
-@synthesize data = data_;
+@synthesize places = places_;
 
-- (NSArray *)data
+- (NSArray *)places
 {
-    if (!data_)
+    if (!places_)
     {
-        data_ = [[FlickrFetcher topPlaces] retain];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        places_ = [[FlickrFetcher topPlaces] retain];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     }
-    return data_;
+    return places_;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -41,7 +43,7 @@
 
 - (void)dealloc
 {
-    [data_ release];
+    [places_ release];
     [super dealloc];
 }
 
@@ -55,94 +57,7 @@
     [item release];
 }
 
-//- (NSArray *)retrieveData
-//{
-//    BOOL useCache = YES;
-//    NSString *docsDirectory = 
-//        [NSSearchPathForDirectoriesInDomains(
-//                                             NSDocumentDirectory,
-//                                             NSUserDomainMask,
-//                                             YES)
-//                               objectAtIndex:0];
-//    NSString *path = [docsDirectory 
-//                      stringByAppendingPathComponent:@"topPlaces.xml"];
-//    NSFileManager *fileManager = [NSFileManager defaultManager];
-//    if (useCache && [fileManager fileExistsAtPath:path])
-//    {
-//        NSData *xmlData = [[NSData alloc] initWithContentsOfFile:path];
-//        NSArray *places = [NSPropertyListSerialization
-//                           propertyListWithData:xmlData
-//                           options:NSPropertyListImmutable
-//                           format:nil
-//                           error:nil];
-//        [xmlData release];
-//        NSLog(@"%@", places);
-//        return places;
-//    }
-//    else
-//    {
-//        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//        NSArray *places = [FlickrFetcher topPlaces];
-//        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-//        NSData *xmlData = [NSPropertyListSerialization
-//                              dataWithPropertyList:places
-//                              format:NSPropertyListXMLFormat_v1_0
-//                              options:0
-//                              error:nil];
-//        [xmlData writeToFile:path atomically:YES];
-//        return places;
-//    }
-//}
-
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
 #pragma mark - View lifecycle
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -161,7 +76,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.data.count;
+    return self.places.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView 
@@ -177,7 +92,7 @@
                  reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    NSDictionary *item = [self.data objectAtIndex:indexPath.row];
+    NSDictionary *item = [self.places objectAtIndex:indexPath.row];
     NSString *content = [item objectForKey:@"_content"];
     NSArray *components = [content componentsSeparatedByString:@","];
     cell.textLabel.text = [components objectAtIndex:0];
@@ -187,50 +102,11 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *item = [self.data objectAtIndex:indexPath.row];
+    NSDictionary *item = [self.places objectAtIndex:indexPath.row];
     NSString *content = [item objectForKey:@"_content"];
     NSArray *components = [content componentsSeparatedByString:@","];
     NSString *title = [components objectAtIndex:0];

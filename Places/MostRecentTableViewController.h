@@ -11,7 +11,14 @@
 
 @interface MostRecentTableViewController : UITableViewController
 {
-    
+    NSMutableArray *photoData_;
 }
+
+- (void)addPhotoWithPhotoId:(NSString *)photoId
+                     secret:(NSString *)secret
+                       farm:(NSString *)farm
+                     server:(NSString *)server
+                      title:(NSString *)title
+                description:(NSString *)description;
 
 @end

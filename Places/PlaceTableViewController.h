@@ -12,7 +12,7 @@
 @interface PlaceTableViewController : UITableViewController
 {
     NSString *placeId_;
-    NSArray *data_;
+    NSArray *photos_;
 }
 
 - (id)initWithPlaceId:(NSString *)placeId andTitle:(NSString *)title;
