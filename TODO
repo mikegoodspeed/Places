@@ -1,0 +1,11 @@
+* Pinch to zoom
+* Autosize photosi to show largest w/out unused space
+* Remove duplicates in Recents
+* Cap recents at 25 (??)
+* Support landscape orientation
+* Serialize Recents to NSUserDefaults
+* Deserialize Recents from NSUserDefaults
+* Add description in Recents
+* Sort list of places (??)
+* Retry 1x if Flickr data .count == 0
+

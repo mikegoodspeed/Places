@@ -97,8 +97,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    NSLog(@"self.photoData.count = %d", self.photoData.count);
-    NSLog(@"photoData_.count = %d", photoData_.count);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
