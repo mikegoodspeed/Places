@@ -116,7 +116,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    NSLog(@"self.photoData.count = %d", self.photoData.count);
     return self.photoData.count;
 }
 
