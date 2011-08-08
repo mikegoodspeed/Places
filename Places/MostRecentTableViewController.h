@@ -11,7 +11,7 @@
 
 @interface MostRecentTableViewController : UITableViewController
 {
-    NSMutableArray *photoData_;
+    NSMutableArray *photoList_;
 }
 
 - (void)addPhotoWithPhotoId:(NSString *)photoId

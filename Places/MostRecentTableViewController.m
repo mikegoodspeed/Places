@@ -13,20 +13,20 @@
 
 @interface MostRecentTableViewController()
 - (void)setup;
-@property (nonatomic, retain) NSMutableArray *photoData;
+@property (nonatomic, retain) NSMutableArray *photoList;
 @end
 
 @implementation MostRecentTableViewController
 
-@synthesize photoData = photoData_;
+@synthesize photoList = photoList_;
 
--(NSMutableArray *)photoData
+-(NSMutableArray *)photoList
 {
-    if (!photoData_)
+    if (!photoList_)
     {
-        photoData_ = [[NSMutableArray alloc] initWithCapacity:0];
+        photoList_ = [[NSMutableArray alloc] initWithCapacity:0];
     }
-    return photoData_;
+    return photoList_;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -41,12 +41,43 @@
 
 - (void)dealloc
 {
-    [photoData_ release];
+    [photoList_ release];
     [super dealloc];
+}
+
+- (void)serializePhotoList
+{
+    NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                          NSUserDomainMask,
+                                                          YES)
+                      objectAtIndex:0];
+    NSString *path = [docs stringByAppendingPathComponent:@"topPlaces.xml"];
+    NSData *data = [NSPropertyListSerialization 
+                    dataWithPropertyList:self.photoList
+                    format:NSPropertyListXMLFormat_v1_0
+                    options:0
+                    error:nil];
+    [data writeToFile:path atomically:YES];
+}
+
+- (NSMutableArray *)deserializePhotoList
+{
+    NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                          NSUserDomainMask,
+                                                          YES)
+                      objectAtIndex:0];
+    NSString *path = [docs stringByAppendingPathComponent:@"topPlaces.xml"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    return [NSPropertyListSerialization
+            propertyListWithData:data
+            options:NSPropertyListMutableContainers
+            format:nil
+            error:nil];
 }
 
 - (void)setup
 {
+    self.photoList = [self deserializePhotoList];
     self.title = @"Recents";
     UITabBarItem *item = [[UITabBarItem alloc] 
                           initWithTabBarSystemItem:UITabBarSystemItemMostRecent
@@ -54,7 +85,6 @@
     self.tabBarItem = item;
     [item release];
 }
-
 
 - (void)addPhotoWithPhotoId:(NSString *)photoId
                      secret:(NSString *)secret
@@ -69,12 +99,13 @@
                           description, @"description", nil];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:
                               @"photoId != %@", photoId];
-    [self.photoData filterUsingPredicate:predicate];
-    if (self.photoData.count == MAX_ENTRIES)
+    [self.photoList filterUsingPredicate:predicate];
+    if (self.photoList.count == MAX_ENTRIES)
     {
-        [self.photoData removeObjectAtIndex:MAX_ENTRIES - 1];
+        [self.photoList removeObjectAtIndex:MAX_ENTRIES - 1];
     }
-    [self.photoData insertObject:item atIndex:0];
+    [self.photoList insertObject:item atIndex:0];
+    [self serializePhotoList];
     [self.tableView reloadData];
 }
 
@@ -105,7 +136,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.photoData.count;
+    return self.photoList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -120,7 +151,7 @@
                  reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    NSDictionary *item = [self.photoData objectAtIndex:indexPath.row];
+    NSDictionary *item = [self.photoList objectAtIndex:indexPath.row];
     NSString *title = [item objectForKey:@"title"];
     NSString *description = [item objectForKey:@"description"];
     cell.textLabel.text = title;
@@ -172,7 +203,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *item = [self.photoData objectAtIndex:indexPath.row];
+    NSDictionary *item = [self.photoList objectAtIndex:indexPath.row];
     NSString *photoId = [item objectForKey:@"photoId"];
     NSString *secret = [item objectForKey:@"secret"];
     NSString *farm = [item objectForKey:@"farm"];
