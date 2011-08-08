@@ -13,6 +13,8 @@
 
 @interface MostRecentTableViewController()
 - (void)setup;
+- (void)serializePhotoList;
+- (NSMutableArray *)deserializePhotoList;
 @property (nonatomic, retain) NSMutableArray *photoList;
 @end
 
@@ -24,7 +26,11 @@
 {
     if (!photoList_)
     {
-        photoList_ = [[NSMutableArray alloc] initWithCapacity:0];
+        photoList_ = [self deserializePhotoList];
+        if (!photoList_)
+        {
+            photoList_ = [[NSMutableArray alloc] initWithCapacity:0];
+        }
     }
     return photoList_;
 }
@@ -45,13 +51,23 @@
     [super dealloc];
 }
 
+- (void)setup
+{
+    self.title = @"Recents";
+    UITabBarItem *item = [[UITabBarItem alloc] 
+                          initWithTabBarSystemItem:UITabBarSystemItemMostRecent
+                          tag:0];
+    self.tabBarItem = item;
+    [item release];
+}
+
 - (void)serializePhotoList
 {
     NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
                                                           NSUserDomainMask,
                                                           YES)
                       objectAtIndex:0];
-    NSString *path = [docs stringByAppendingPathComponent:@"topPlaces.xml"];
+    NSString *path = [docs stringByAppendingPathComponent:@"recents.xml"];
     NSData *data = [NSPropertyListSerialization 
                     dataWithPropertyList:self.photoList
                     format:NSPropertyListXMLFormat_v1_0
@@ -66,26 +82,23 @@
                                                           NSUserDomainMask,
                                                           YES)
                       objectAtIndex:0];
-    NSString *path = [docs stringByAppendingPathComponent:@"topPlaces.xml"];
+    NSString *path = [docs stringByAppendingPathComponent:@"recents.xml"];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:path])
+    {
+        return NULL;
+    }
     NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data)
+    {
+        return NULL;
+    }
     NSArray *array = [NSPropertyListSerialization
                       propertyListWithData:data
                       options:NSPropertyListImmutable
                       format:nil
                       error:nil];
     return [NSMutableArray arrayWithArray:array];
-}
-
-- (void)setup
-{
-    self.photoList = [self deserializePhotoList];
-    [self.tableView reloadData];
-    self.title = @"Recents";
-    UITabBarItem *item = [[UITabBarItem alloc] 
-                          initWithTabBarSystemItem:UITabBarSystemItemMostRecent
-                          tag:0];
-    self.tabBarItem = item;
-    [item release];
 }
 
 - (void)addPhotoWithPhotoId:(NSString *)photoId
