@@ -68,16 +68,18 @@
                       objectAtIndex:0];
     NSString *path = [docs stringByAppendingPathComponent:@"topPlaces.xml"];
     NSData *data = [NSData dataWithContentsOfFile:path];
-    return [NSPropertyListSerialization
-            propertyListWithData:data
-            options:NSPropertyListMutableContainers
-            format:nil
-            error:nil];
+    NSArray *array = [NSPropertyListSerialization
+                      propertyListWithData:data
+                      options:NSPropertyListImmutable
+                      format:nil
+                      error:nil];
+    return [NSMutableArray arrayWithArray:array];
 }
 
 - (void)setup
 {
     self.photoList = [self deserializePhotoList];
+    [self.tableView reloadData];
     self.title = @"Recents";
     UITabBarItem *item = [[UITabBarItem alloc] 
                           initWithTabBarSystemItem:UITabBarSystemItemMostRecent
@@ -100,9 +102,9 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:
                               @"photoId != %@", photoId];
     [self.photoList filterUsingPredicate:predicate];
-    if (self.photoList.count == MAX_ENTRIES)
+    while (self.photoList.count >= MAX_ENTRIES)
     {
-        [self.photoList removeObjectAtIndex:MAX_ENTRIES - 1];
+        [self.photoList removeLastObject];
     }
     [self.photoList insertObject:item atIndex:0];
     [self serializePhotoList];
@@ -121,8 +123,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
 #pragma mark - Table view data source
