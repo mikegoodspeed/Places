@@ -9,6 +9,8 @@
 #import "MostRecentTableViewController.h"
 #import "PhotoViewController.h"
 
+#define MAX_ENTRIES 25
+
 @interface MostRecentTableViewController()
 - (void)setup;
 @property (nonatomic, retain) NSMutableArray *photoData;
@@ -68,6 +70,10 @@
     NSPredicate *predicate = [NSPredicate predicateWithFormat:
                               @"photoId != %@", photoId];
     [self.photoData filterUsingPredicate:predicate];
+    if (self.photoData.count == MAX_ENTRIES)
+    {
+        [self.photoData removeObjectAtIndex:MAX_ENTRIES - 1];
+    }
     [self.photoData insertObject:item atIndex:0];
     [self.tableView reloadData];
 }
@@ -81,23 +87,6 @@
 }
 
 #pragma mark - View lifecycle
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
