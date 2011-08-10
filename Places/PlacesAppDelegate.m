@@ -27,14 +27,14 @@
 {
     self.tb = [[UITabBarController alloc] init];
     
+    UINavigationController *trnc = [[UINavigationController alloc] init];
     TopRatedTableViewController *trtvc = [[TopRatedTableViewController alloc]
                                           init];
-    UINavigationController *trnc = [[UINavigationController alloc] init];
     [trnc pushViewController:trtvc animated:NO];
     
+    UINavigationController *mrnc = [[UINavigationController alloc] init];
     MostRecentTableViewController *mrtvc = [[MostRecentTableViewController alloc]
                                             init];
-    UINavigationController *mrnc = [[UINavigationController alloc] init];
     [mrnc pushViewController:mrtvc animated:NO];
     
     self.tb.viewControllers = [NSArray arrayWithObjects: trnc, mrnc, nil];

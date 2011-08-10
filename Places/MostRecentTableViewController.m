@@ -161,7 +161,7 @@
     if (cell == nil)
     {
         cell = [[[UITableViewCell alloc] 
-                 initWithStyle:UITableViewCellStyleDefault 
+                 initWithStyle:UITableViewCellStyleSubtitle
                  reuseIdentifier:CellIdentifier] autorelease];
     }
     

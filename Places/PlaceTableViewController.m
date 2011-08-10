@@ -28,7 +28,7 @@
       viewControllers] lastObject];
 }
 
-- (NSArray *)data
+- (NSArray *)places
 {
     if (!places_)
     {
@@ -37,7 +37,7 @@
     return places_;
 }
 
-- (id)initWithPlaceId:(NSString *)placeId andTitle:(NSString *)title
+- (id)initWithPlaceId:(NSString *)placeId AndTitle:(NSString *)title
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self)
@@ -121,7 +121,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.data.count;
+    return self.places.count;
 }
 
 - (NSArray *)cellInfoFromIndexPath:(NSIndexPath *)indexPath

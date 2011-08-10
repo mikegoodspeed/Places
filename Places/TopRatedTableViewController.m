@@ -12,7 +12,6 @@
 
 @interface TopRatedTableViewController()
 - (void)setup;
-//- (NSArray *)retrieveData;
 @property (nonatomic, retain) NSArray *places;
 @end
 
@@ -103,7 +102,8 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)          tableView:(UITableView *)tableView
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *item = [self.places objectAtIndex:indexPath.row];
     NSString *content = [item objectForKey:@"_content"];
@@ -111,7 +111,7 @@
     NSString *title = [components objectAtIndex:0];
     NSString *placeId = [item objectForKey:@"place_id"];
     PlaceTableViewController *ptvc = [[PlaceTableViewController alloc]
-                                      initWithPlaceId:placeId andTitle:title];
+                                      initWithPlaceId:placeId AndTitle:title];
     [self.navigationController pushViewController:ptvc animated:YES];
     [ptvc release];
 }

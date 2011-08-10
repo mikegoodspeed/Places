@@ -15,6 +15,6 @@
     NSArray *photos_;
 }
 
-- (id)initWithPlaceId:(NSString *)placeId andTitle:(NSString *)title;
+- (id)initWithPlaceId:(NSString *)placeId AndTitle:(NSString *)title;
 
 @end
