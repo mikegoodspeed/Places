@@ -1,6 +1,5 @@
 * Pinch to zoom
 * Autosize photos to show largest w/out unused space
-* Add description in Recents
 * Sort list of places (??)
 * Retry 1x if Flickr data .count == 0
 
