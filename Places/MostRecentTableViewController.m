@@ -84,7 +84,7 @@
                       objectAtIndex:0];
     NSString *path = [docs stringByAppendingPathComponent:@"recents.xml"];
     NSFileManager *manager = [NSFileManager defaultManager];
-    if ([manager fileExistsAtPath:path])
+    if (![manager fileExistsAtPath:path])
     {
         return NULL;
     }

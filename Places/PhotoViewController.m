@@ -86,6 +86,7 @@
     [scrollView addSubview:imgView];
     self.view = scrollView;
     [scrollView release];
+    [imgView release];
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
