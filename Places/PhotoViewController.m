@@ -55,6 +55,7 @@
         self.farm = farm;
         self.server = server;
         self.title = title;
+        self.hidesBottomBarWhenPushed = YES;
     }
     return self;
 }
