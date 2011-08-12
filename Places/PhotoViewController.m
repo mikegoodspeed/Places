@@ -56,6 +56,7 @@
         self.server = server;
         self.title = title;
         self.hidesBottomBarWhenPushed = YES;
+        self.view.backgroundColor = [UIColor blackColor];
     }
     return self;
 }
@@ -81,7 +82,7 @@
     CGRect frame = [[UIScreen mainScreen] applicationFrame];
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:frame];
     scrollView.contentSize = image.size;
-    scrollView.minimumZoomScale = 0.07;
+    scrollView.minimumZoomScale = 0.50;
     scrollView.maximumZoomScale = 1.0;
     scrollView.zoomScale = 0.7;
     scrollView.delegate = self;

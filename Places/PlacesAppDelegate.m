@@ -26,6 +26,7 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.tb = [[UITabBarController alloc] init];
+    self.tb.delegate = self;
     
     UINavigationController *trnc = [[UINavigationController alloc] init];
     TopRatedTableViewController *trtvc = [[TopRatedTableViewController alloc]
@@ -45,6 +46,16 @@
     [mrtvc release];
     [mrnc release];
     return YES;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController
+ didSelectViewController:(UIViewController *)viewController
+{
+    if ([viewController isKindOfClass:[UINavigationController class]])
+    {
+        [((UINavigationController *) viewController)
+         popToRootViewControllerAnimated:NO];
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
