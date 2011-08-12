@@ -201,6 +201,7 @@
     NSString *farm = [item objectForKey:@"farm"];
     NSString *server = [item objectForKey:@"server"];
     NSString *title = [item objectForKey:@"title"];
+    NSString *description = [item objectForKey:@"description"];
     PhotoViewController *pvc = [[PhotoViewController alloc] 
                                 initWithPhotoId:photoId
                                 secret:secret
@@ -209,6 +210,13 @@
                                 title:title];
     [self.navigationController pushViewController:pvc animated:YES];
     [pvc release];
+    
+    [self addPhotoWithPhotoId:photoId
+                       secret:secret
+                         farm:farm
+                       server:server
+                        title:title
+                  description:description];
 }
 
 @end
