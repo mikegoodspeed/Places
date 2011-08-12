@@ -34,9 +34,9 @@
                               self.secret, @"secret",
                               self.farm, @"farm",
                               self.server, @"server", nil];
-        imgData_ = [FlickrFetcher
+        imgData_ = [[FlickrFetcher
                     imageDataForPhotoWithFlickrInfo:info
-                    format:FlickrFetcherPhotoFormatLarge];
+                    format:FlickrFetcherPhotoFormatLarge] retain];
     }
     return imgData_;
 }
