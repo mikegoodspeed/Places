@@ -15,6 +15,8 @@
 @property (nonatomic, copy) NSString *farm;
 @property (nonatomic, copy) NSString *server;
 @property (nonatomic, retain) NSData *imgData;
+@property (nonatomic, retain) UIScrollView *scrollView;
+@property (nonatomic, retain) UIImageView *imgView;
 @end
 
 @implementation PhotoViewController
@@ -24,6 +26,8 @@
 @synthesize farm = farm_;
 @synthesize server = server_;
 @synthesize imgData = imgData_;
+@synthesize scrollView = scrollView_;
+@synthesize imgView = imgView_;
 
 - (NSData *)imgData
 {
@@ -68,6 +72,7 @@
     [farm_ release];
     [server_ release];
     [imgData_ release];
+    [scrollView_ release];
     [imgView_ release];
     [super dealloc];
 }
@@ -78,22 +83,25 @@
 - (void)loadView
 {    
     UIImage *image = [UIImage imageWithData:self.imgData];
-    imgView_ = [[UIImageView alloc] initWithImage:image];
+    self.imgView = [[UIImageView alloc] initWithImage:image];
+    [self.imgView release];
+    
     CGRect frame = [[UIScreen mainScreen] applicationFrame];
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:frame];
-    scrollView.contentSize = image.size;
-    scrollView.minimumZoomScale = 0.50;
-    scrollView.maximumZoomScale = 1.0;
-    scrollView.zoomScale = 0.7;
-    scrollView.delegate = self;
-    [scrollView addSubview:imgView_];
-    self.view = scrollView;
-    [scrollView release];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:frame];
+    [self.scrollView release];
+    
+    self.scrollView.contentSize = image.size;
+    self.scrollView.minimumZoomScale = 0.5;
+    self.scrollView.maximumZoomScale = 1.0;
+    self.scrollView.zoomScale = 0.7;
+    self.scrollView.delegate = self;
+    [self.scrollView addSubview:self.imgView];
+    self.view = self.scrollView;
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    return imgView_;
+    return self.imgView;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -15,6 +15,7 @@
     NSString *farm_;
     NSString *server_;
     NSData *imgData_;
+    UIScrollView *scrollView_;
     UIImageView *imgView_;
 }
 
