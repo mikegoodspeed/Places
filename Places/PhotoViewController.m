@@ -66,6 +66,7 @@
     [farm_ release];
     [server_ release];
     [imgData_ release];
+    [imgView_ release];
     [super dealloc];
 }
 
@@ -75,7 +76,7 @@
 - (void)loadView
 {    
     UIImage *image = [UIImage imageWithData:self.imgData];
-    UIImageView *imgView = [[UIImageView alloc] initWithImage:image];
+    imgView_ = [[UIImageView alloc] initWithImage:image];
     CGRect frame = [[UIScreen mainScreen] applicationFrame];
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:frame];
     scrollView.contentSize = image.size;
@@ -83,16 +84,14 @@
     scrollView.maximumZoomScale = 1.0;
     scrollView.zoomScale = 0.7;
     scrollView.delegate = self;
-    [scrollView addSubview:imgView];
+    [scrollView addSubview:imgView_];
     self.view = scrollView;
     [scrollView release];
-    [imgView release];
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    // return the imgView inside the scrollView inside self.view
-    return [[[[self.view subviews] lastObject] subviews] lastObject];
+    return imgView_;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

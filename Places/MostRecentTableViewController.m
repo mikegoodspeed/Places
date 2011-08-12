@@ -26,10 +26,10 @@
 {
     if (!photoList_)
     {
-        photoList_ = [self deserializePhotoList];
+        photoList_ = [[self deserializePhotoList] retain];
         if (!photoList_)
         {
-            photoList_ = [[NSMutableArray alloc] initWithCapacity:0];
+            photoList_ = [[[NSMutableArray alloc] initWithCapacity:0] retain];
         }
     }
     return photoList_;

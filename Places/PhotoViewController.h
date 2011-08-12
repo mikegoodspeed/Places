@@ -15,6 +15,7 @@
     NSString *farm_;
     NSString *server_;
     NSData *imgData_;
+    UIImageView *imgView_;
 }
 
 - (id)initWithPhotoId:(NSString *)photoId
