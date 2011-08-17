@@ -26,6 +26,7 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.tb = [[UITabBarController alloc] init];
+    [self.tb release];
     self.tb.delegate = self;
     
     UINavigationController *trnc = [[UINavigationController alloc] init];
