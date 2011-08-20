@@ -20,5 +20,4 @@
                      server:(NSString *)server
                       title:(NSString *)title
                 description:(NSString *)description;
-
 @end

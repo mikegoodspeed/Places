@@ -16,5 +16,4 @@
 }
 
 - (id)initWithPlaceId:(NSString *)placeId AndTitle:(NSString *)title;
-
 @end

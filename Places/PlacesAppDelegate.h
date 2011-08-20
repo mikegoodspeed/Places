@@ -16,5 +16,4 @@
 
 @property (nonatomic, retain) IBOutlet UITabBarController *tb;
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-
 @end

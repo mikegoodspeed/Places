@@ -92,7 +92,6 @@
 
 #pragma mark - View lifecycle
 
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {    
     UIImage *image = [UIImage imageWithData:self.imgData];
@@ -104,12 +103,45 @@
     [self.scrollView release];
     
     self.scrollView.contentSize = image.size;
-    self.scrollView.minimumZoomScale = 0.5;
-    self.scrollView.maximumZoomScale = 1.0;
-    self.scrollView.zoomScale = 0.7;
+    self.scrollView.minimumZoomScale = 0.1;
+    self.scrollView.maximumZoomScale = 6.0;
+    self.scrollView.zoomScale = 2.0;
     self.scrollView.delegate = self;
     [self.scrollView addSubview:self.imgView];
     self.view = self.scrollView;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    // Set up the default zoom and origin
+    CGRect viewRect = self.scrollView.bounds;
+    UIImage *image = self.imgView.image;
+    CGFloat screenAspect = viewRect.size.width / viewRect.size.height;
+    CGFloat imageAspect = image.size.width / image.size.height;
+    
+    CGFloat width = image.size.width;
+    CGFloat height = image.size.height;
+    if (imageAspect > screenAspect)
+    {
+        width *= screenAspect;
+    }
+    else
+    {
+        height /= screenAspect;
+    }
+    CGRect zoomRect = CGRectMake(0, 0, width, height);
+    
+    zoomRect.origin.x = (image.size.width - zoomRect.size.width) / 2;
+    zoomRect.origin.y = (image.size.height - zoomRect.size.height) / 2;
+    
+    [self.scrollView zoomToRect:zoomRect animated:NO];
+    
+    // Set the minimum zoom
+    CGFloat xscale = viewRect.size.width / image.size.width;
+    CGFloat yscale = viewRect.size.height / image.size.height;
+    
+    CGFloat minscale = (xscale < yscale ? xscale : yscale);
+    self.scrollView.minimumZoomScale = minscale;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -127,7 +159,8 @@
     return self.imgView;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (BOOL)shouldAutorotateToInterfaceOrientation:
+    (UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
 }
