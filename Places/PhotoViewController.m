@@ -14,9 +14,11 @@
 @property (nonatomic, copy) NSString *secret;
 @property (nonatomic, copy) NSString *farm;
 @property (nonatomic, copy) NSString *server;
+@property (nonatomic, copy) NSString *description;
 @property (nonatomic, retain) NSData *imgData;
 @property (nonatomic, retain) UIScrollView *scrollView;
 @property (nonatomic, retain) UIImageView *imgView;
+@property (readonly) MostRecentTableViewController *recents;
 @end
 
 @implementation PhotoViewController
@@ -25,6 +27,7 @@
 @synthesize secret = secret_;
 @synthesize farm = farm_;
 @synthesize server = server_;
+@synthesize description = description_;
 @synthesize imgData = imgData_;
 @synthesize scrollView = scrollView_;
 @synthesize imgView = imgView_;
@@ -45,11 +48,20 @@
     return imgData_;
 }
 
+- (MostRecentTableViewController *)recents
+{
+    UITabBarController *tbc = self.tabBarController;
+    UINavigationController *nc = [tbc.viewControllers lastObject];
+    MostRecentTableViewController *mrtvc = [nc.viewControllers objectAtIndex:0];
+    return mrtvc;
+}
+
 - (id)initWithPhotoId:(NSString *)photoId
                secret:(NSString *)secret
                  farm:(NSString *)farm
                server:(NSString *)server
                 title:(NSString *)title
+          description:(NSString *)description
 {
     self = [super init];
     if (self)
@@ -59,6 +71,7 @@
         self.farm = farm;
         self.server = server;
         self.title = title;
+        self.description = description;
         self.hidesBottomBarWhenPushed = YES;
         self.view.backgroundColor = [UIColor blackColor];
     }
@@ -97,6 +110,16 @@
     self.scrollView.delegate = self;
     [self.scrollView addSubview:self.imgView];
     self.view = self.scrollView;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.recents addPhotoWithPhotoId:self.photoId
+                               secret:self.secret
+                                 farm:self.farm
+                               server:self.server
+                                title:self.title
+                          description:self.description];
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView

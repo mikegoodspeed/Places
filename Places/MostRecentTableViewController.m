@@ -207,16 +207,10 @@
                                 secret:secret
                                 farm:farm
                                 server:server
-                                title:title];
+                                title:title
+                                description:description];
     [self.navigationController pushViewController:pvc animated:YES];
     [pvc release];
-    
-    [self addPhotoWithPhotoId:photoId
-                       secret:secret
-                         farm:farm
-                       server:server
-                        title:title
-                  description:description];
 }
 
 @end

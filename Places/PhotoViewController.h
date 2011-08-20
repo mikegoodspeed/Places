@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MostRecentTableViewController.h"
 
 @interface PhotoViewController : UIViewController <UIScrollViewDelegate>
 {
@@ -14,6 +15,7 @@
     NSString *secret_;
     NSString *farm_;
     NSString *server_;
+    NSString *description_;
     NSData *imgData_;
     UIScrollView *scrollView_;
     UIImageView *imgView_;
@@ -23,5 +25,6 @@
                secret:(NSString *)secret
                  farm:(NSString *)farm
                server:(NSString *)server
-                title:(NSString *)title;
+                title:(NSString *)title
+          description:(NSString *)description;
 @end

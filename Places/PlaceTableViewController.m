@@ -9,24 +9,16 @@
 #import "PlaceTableViewController.h"
 #import "FlickrFetcher.h"
 #import "PhotoViewController.h"
-#import "MostRecentTableViewController.h"
 
 @interface PlaceTableViewController()
 @property (nonatomic, copy) NSString *placeId;
 @property (nonatomic, retain) NSArray *places;
-@property (readonly) MostRecentTableViewController *recents;
 @end
 
 @implementation PlaceTableViewController
 
 @synthesize placeId = placeId_;
 @synthesize places = places_;
-
-- (MostRecentTableViewController *)recents
-{
-    return [[[self.tabBarController.viewControllers lastObject]
-      viewControllers] lastObject];
-}
 
 - (NSArray *)places
 {
@@ -183,16 +175,10 @@
                                 secret:secret
                                 farm:farm
                                 server:server
-                                title:title];
+                                title:title
+                                description:description];
     [self.navigationController pushViewController:pvc animated:YES];
     [pvc release];
-        
-    [self.recents addPhotoWithPhotoId:photoId
-                               secret:secret
-                                 farm:farm
-                               server:server
-                                title:title
-                          description:description];
 }
 
 @end
