@@ -119,20 +119,19 @@
     CGFloat screenAspect = viewRect.size.width / viewRect.size.height;
     CGFloat imageAspect = image.size.width / image.size.height;
     
-    CGFloat width = image.size.width;
+    CGRect zoomRect;
     CGFloat height = image.size.height;
+    CGFloat width = image.size.width;
     if (imageAspect > screenAspect)
     {
-        width *= screenAspect;
+        zoomRect = CGRectMake(0, 0, height * screenAspect, height);
     }
     else
     {
-        height /= screenAspect;
+        zoomRect = CGRectMake(0, 0, width, width / screenAspect);
     }
-    CGRect zoomRect = CGRectMake(0, 0, width, height);
-    
-    zoomRect.origin.x = (image.size.width - zoomRect.size.width) / 2;
-    zoomRect.origin.y = (image.size.height - zoomRect.size.height) / 2;
+    zoomRect.origin.x = (width - zoomRect.size.width) / 2;
+    zoomRect.origin.y = (height - zoomRect.size.height) / 2;
     
     [self.scrollView zoomToRect:zoomRect animated:NO];
     
