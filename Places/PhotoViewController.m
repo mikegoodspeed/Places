@@ -73,7 +73,6 @@
         self.title = title;
         self.description = description;
         self.hidesBottomBarWhenPushed = YES;
-        self.view.backgroundColor = [UIColor blackColor];
     }
     return self;
 }
