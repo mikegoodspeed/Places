@@ -140,6 +140,7 @@
     
     CGFloat minscale = (xscale < yscale ? xscale : yscale);
     self.scrollView.minimumZoomScale = minscale;
+    [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -150,6 +151,8 @@
                                server:self.server
                                 title:self.title
                           description:self.description];
+    [self.scrollView flashScrollIndicators];
+    [super viewDidAppear:animated];
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
